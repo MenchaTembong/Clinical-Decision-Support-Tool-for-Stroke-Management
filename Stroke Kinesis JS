@@ -1,0 +1,419 @@
+import React, { useState } from 'react';
+import { AlertCircle, Navigation, Clock, Phone, CheckCircle, User, Activity, MapPin, Send } from 'lucide-react';
+
+const StrokeKinesisUI = () => {
+  const [currentScreen, setCurrentScreen] = useState('home');
+  const [patientData, setPatientData] = useState({
+    age: '',
+    lastKnownWell: '',
+    symptoms: {
+      faceDrooping: null,
+      armWeakness: null,
+      speechDifficulty: null,
+      balance: null,
+      eyes: null
+    },
+    vitals: {
+      bp: '',
+      hr: '',
+      glucose: ''
+    }
+  });
+  const [selectedCenter, setSelectedCenter] = useState(null);
+
+  const strokeCenters = [
+    { id: 1, name: "Toronto Western Hospital", level: 5, distance: "3.2 km", eta: "8 min", capability: "Comprehensive + EVT" },
+    { id: 2, name: "St. Michael's Hospital", level: 5, distance: "4.1 km", eta: "11 min", capability: "Comprehensive + EVT" },
+    { id: 3, name: "Sunnybrook Health Sciences", level: 4, distance: "7.8 km", eta: "15 min", capability: "Regional Stroke Center" }
+  ];
+
+  const updateSymptom = (symptom, value) => {
+    setPatientData(prev => ({
+      ...prev,
+      symptoms: { ...prev.symptoms, [symptom]: value }
+    }));
+  };
+
+  const calculateStrokeScore = () => {
+    const symptoms = patientData.symptoms;
+    let score = 0;
+    if (symptoms.faceDrooping) score++;
+    if (symptoms.armWeakness) score++;
+    if (symptoms.speechDifficulty) score++;
+    if (symptoms.balance) score++;
+    if (symptoms.eyes) score++;
+    return score;
+  };
+
+  const renderHome = () => (
+    <div className="flex flex-col h-full">
+      <div className="bg-red-600 text-white p-6">
+        <h1 className="text-3xl font-bold mb-2">StrokeKinesis</h1>
+        <p className="text-red-100">Pre-Hospital Stroke Management System</p>
+      </div>
+      
+      <div className="flex-1 p-6 bg-gray-50">
+        <div className="max-w-2xl mx-auto space-y-4">
+          <button
+            onClick={() => setCurrentScreen('assessment')}
+            className="w-full bg-red-600 hover:bg-red-700 text-white p-8 rounded-lg shadow-lg text-2xl font-bold transition"
+          >
+            <AlertCircle className="inline-block mr-3" size={32} />
+            START STROKE ASSESSMENT
+          </button>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white p-6 rounded-lg shadow">
+              <Activity className="text-blue-600 mb-3" size={32} />
+              <h3 className="font-bold text-lg mb-2">Active Cases</h3>
+              <p className="text-3xl font-bold text-gray-800">0</p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow">
+              <Clock className="text-green-600 mb-3" size={32} />
+              <h3 className="font-bold text-lg mb-2">Avg Response Time</h3>
+              <p className="text-3xl font-bold text-gray-800">7:32</p>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <h3 className="font-bold text-blue-900 mb-2">Quick Tips</h3>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Time is brain - every minute counts</li>
+              <li>• Use BE-FAST for rapid assessment</li>
+              <li>• Document last known well time accurately</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderAssessment = () => (
+    <div className="flex flex-col h-full">
+      <div className="bg-red-600 text-white p-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <button onClick={() => setCurrentScreen('home')} className="mr-4 text-2xl">←</button>
+          <h1 className="text-2xl font-bold">BE-FAST Assessment</h1>
+        </div>
+        <div className="bg-red-700 px-4 py-2 rounded">
+          <Clock className="inline mr-2" size={20} />
+          <span className="font-mono text-lg">12:34:56</span>
+        </div>
+      </div>
+      
+      <div className="flex-1 overflow-auto p-6 bg-gray-50">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4 flex items-center">
+              <User className="mr-2 text-blue-600" />
+              Patient Information
+            </h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold mb-2">Age</label>
+                <input
+                  type="number"
+                  value={patientData.age}
+                  onChange={(e) => setPatientData(prev => ({ ...prev, age: e.target.value }))}
+                  className="w-full p-3 border-2 border-gray-300 rounded text-lg"
+                  placeholder="Years"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2">Last Known Well</label>
+                <input
+                  type="time"
+                  value={patientData.lastKnownWell}
+                  onChange={(e) => setPatientData(prev => ({ ...prev, lastKnownWell: e.target.value }))}
+                  className="w-full p-3 border-2 border-gray-300 rounded text-lg"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4">BE-FAST Stroke Scale</h2>
+            
+            {[
+              { key: 'balance', label: 'B - Balance', desc: 'Sudden loss of balance or coordination?' },
+              { key: 'eyes', label: 'E - Eyes', desc: 'Vision trouble in one or both eyes?' },
+              { key: 'faceDrooping', label: 'F - Face', desc: 'Face drooping or numbness?' },
+              { key: 'armWeakness', label: 'A - Arm', desc: 'Arm weakness or numbness?' },
+              { key: 'speechDifficulty', label: 'S - Speech', desc: 'Speech difficulty or slurred?' }
+            ].map(item => (
+              <div key={item.key} className="mb-6 pb-6 border-b last:border-0">
+                <div className="font-bold text-lg mb-1">{item.label}</div>
+                <div className="text-gray-600 text-sm mb-3">{item.desc}</div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => updateSymptom(item.key, true)}
+                    className={`flex-1 p-4 rounded-lg font-bold transition ${
+                      patientData.symptoms[item.key] === true
+                        ? 'bg-red-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    YES
+                  </button>
+                  <button
+                    onClick={() => updateSymptom(item.key, false)}
+                    className={`flex-1 p-4 rounded-lg font-bold transition ${
+                      patientData.symptoms[item.key] === false
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    NO
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4">Vital Signs</h2>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-bold mb-2">Blood Pressure</label>
+                <input
+                  type="text"
+                  placeholder="120/80"
+                  value={patientData.vitals.bp}
+                  onChange={(e) => setPatientData(prev => ({
+                    ...prev,
+                    vitals: { ...prev.vitals, bp: e.target.value }
+                  }))}
+                  className="w-full p-3 border-2 border-gray-300 rounded text-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2">Heart Rate</label>
+                <input
+                  type="number"
+                  placeholder="75"
+                  value={patientData.vitals.hr}
+                  onChange={(e) => setPatientData(prev => ({
+                    ...prev,
+                    vitals: { ...prev.vitals, hr: e.target.value }
+                  }))}
+                  className="w-full p-3 border-2 border-gray-300 rounded text-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2">Blood Glucose</label>
+                <input
+                  type="number"
+                  placeholder="5.5"
+                  value={patientData.vitals.glucose}
+                  onChange={(e) => setPatientData(prev => ({
+                    ...prev,
+                    vitals: { ...prev.vitals, glucose: e.target.value }
+                  }))}
+                  className="w-full p-3 border-2 border-gray-300 rounded text-lg"
+                />
+              </div>
+            </div>
+          </div>
+
+          {calculateStrokeScore() > 0 && (
+            <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-orange-900 text-xl">Stroke Likelihood: HIGH</h3>
+                  <p className="text-orange-800">Score: {calculateStrokeScore()}/5 positive findings</p>
+                </div>
+                <button
+                  onClick={() => setCurrentScreen('routing')}
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition"
+                >
+                  CONTINUE TO ROUTING →
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderRouting = () => (
+    <div className="flex flex-col h-full">
+      <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <button onClick={() => setCurrentScreen('assessment')} className="mr-4 text-2xl">←</button>
+          <h1 className="text-2xl font-bold">Destination Selection</h1>
+        </div>
+        <div className="bg-blue-700 px-4 py-2 rounded">
+          <Clock className="inline mr-2" size={20} />
+          <span className="font-mono text-lg">12:38:22</span>
+        </div>
+      </div>
+      
+      <div className="flex-1 overflow-auto p-6 bg-gray-50">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+            <h3 className="font-bold text-yellow-900 mb-2">Recommended Centers</h3>
+            <p className="text-yellow-800 text-sm">Based on stroke severity (Score: {calculateStrokeScore()}/5), patient location, and real-time traffic</p>
+          </div>
+
+          {strokeCenters.map((center, idx) => (
+            <div
+              key={center.id}
+              onClick={() => setSelectedCenter(center.id)}
+              className={`bg-white p-6 rounded-lg shadow cursor-pointer transition ${
+                selectedCenter === center.id ? 'ring-4 ring-blue-500' : 'hover:shadow-lg'
+              } ${idx === 0 ? 'border-2 border-green-500' : ''}`}
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center mb-2">
+                    <h3 className="text-xl font-bold">{center.name}</h3>
+                    {idx === 0 && (
+                      <span className="ml-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-bold">
+                        RECOMMENDED
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                    <span className="flex items-center">
+                      <MapPin size={16} className="mr-1" />
+                      {center.distance}
+                    </span>
+                    <span className="flex items-center">
+                      <Clock size={16} className="mr-1" />
+                      ETA: {center.eta}
+                    </span>
+                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-bold">
+                      Level {center.level}
+                    </span>
+                  </div>
+                  <p className="text-gray-700 font-medium">{center.capability}</p>
+                </div>
+                <div className="ml-4">
+                  {selectedCenter === center.id ? (
+                    <CheckCircle className="text-blue-600" size={32} />
+                  ) : (
+                    <div className="w-8 h-8 border-2 border-gray-300 rounded-full"></div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {selectedCenter && (
+            <button
+              onClick={() => setCurrentScreen('notification')}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white p-6 rounded-lg font-bold text-xl transition flex items-center justify-center"
+            >
+              <Send className="mr-3" size={24} />
+              PRE-NOTIFY HOSPITAL & BEGIN TRANSPORT
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderNotification = () => (
+    <div className="flex flex-col h-full">
+      <div className="bg-green-600 text-white p-4">
+        <h1 className="text-2xl font-bold flex items-center">
+          <CheckCircle className="mr-3" size={28} />
+          Hospital Pre-Notified
+        </h1>
+      </div>
+      
+      <div className="flex-1 overflow-auto p-6 bg-gray-50">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg">
+            <h2 className="text-2xl font-bold text-green-900 mb-2">
+              Toronto Western Hospital
+            </h2>
+            <p className="text-green-800 text-lg mb-4">Stroke team activated - Ready for arrival in 8 minutes</p>
+            <div className="flex gap-4">
+              <button className="flex-1 bg-green-600 hover:bg-green-700 text-white p-4 rounded-lg font-bold transition flex items-center justify-center">
+                <Phone className="mr-2" />
+                CALL HOSPITAL
+              </button>
+              <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg font-bold transition flex items-center justify-center">
+                <Navigation className="mr-2" />
+                OPEN NAVIGATION
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="font-bold text-xl mb-4">Data Transmitted to Hospital EHR</h3>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-medium">Patient Age:</span>
+                <span>{patientData.age || 'N/A'} years</span>
+              </div>
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-medium">Last Known Well:</span>
+                <span>{patientData.lastKnownWell || 'N/A'}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-medium">BE-FAST Score:</span>
+                <span className="text-red-600 font-bold">{calculateStrokeScore()}/5</span>
+              </div>
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-medium">Blood Pressure:</span>
+                <span>{patientData.vitals.bp || 'N/A'}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b">
+                <span className="font-medium">Heart Rate:</span>
+                <span>{patientData.vitals.hr || 'N/A'} bpm</span>
+              </div>
+              <div className="flex justify-between py-2">
+                <span className="font-medium">Blood Glucose:</span>
+                <span>{patientData.vitals.glucose || 'N/A'} mmol/L</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 p-6 rounded-lg">
+            <h3 className="font-bold text-lg mb-3">En-Route Protocols</h3>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start">
+                <CheckCircle className="text-green-600 mr-2 flex-shrink-0 mt-1" size={18} />
+                <span>Maintain IV access - 0.9% NaCl</span>
+              </li>
+              <li className="flex items-start">
+                <CheckCircle className="text-green-600 mr-2 flex-shrink-0 mt-1" size={18} />
+                <span>Monitor vitals every 5 minutes</span>
+              </li>
+              <li className="flex items-start">
+                <CheckCircle className="text-green-600 mr-2 flex-shrink-0 mt-1" size={18} />
+                <span>Keep patient NPO (nothing by mouth)</span>
+              </li>
+              <li className="flex items-start">
+                <CheckCircle className="text-green-600 mr-2 flex-shrink-0 mt-1" size={18} />
+                <span>Position head at 30 degrees</span>
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => setCurrentScreen('home')}
+            className="w-full bg-gray-600 hover:bg-gray-700 text-white p-4 rounded-lg font-bold transition"
+          >
+            COMPLETE CASE & RETURN HOME
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="w-full h-screen bg-gray-100 font-sans">
+      {currentScreen === 'home' && renderHome()}
+      {currentScreen === 'assessment' && renderAssessment()}
+      {currentScreen === 'routing' && renderRouting()}
+      {currentScreen === 'notification' && renderNotification()}
+    </div>
+  );
+};
+
+export default StrokeKinesisUI;
