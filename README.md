@@ -1,55 +1,189 @@
-<h1>🚑CDSS for Prehospital Management of Acute Ischemic Stroke-<i>Stroke Kinesis</i></h1>
+# 🚑 CDSS for Prehospital Management of Acute Ischemic Stroke  
+### *Stroke Kinesis*
+
+---
+
+## 📘 Description
+
+**StrokeKinesis** is a comprehensive clinical decision support (CDS) platform designed to transform **prehospital acute ischemic stroke (AIS) management** by providing real-time triage support, intelligent destination routing, and seamless EMS–hospital integration.
+
+---
+
+## ❗ The Problem
+
+**Current-State Stroke Care Pathway (BPMN):**  
+
+Despite major advances in acute stroke treatment, **prehospital stroke care remains fragmented and inconsistent**, creating preventable delays during the most time-critical phase of care.
+
+#### 🚨 Key Challenges
+
+- **Inconsistent Stroke Triage**  
+  EMS teams apply stroke screening tools (FAST, BE-FAST, LAMS) variably, leading to inconsistent severity assessment and missed large vessel occlusions.
+
+- **Suboptimal Destination Decisions**  
+  Patients are frequently transported to the *nearest* hospital rather than the *most appropriate* stroke center, resulting in avoidable inter-facility transfers and treatment delays.
+
+- **Limited Pre-Arrival Communication**  
+  Hospitals often receive minimal or late notification, leaving stroke teams unprepared at patient arrival and increasing door-to-needle times.
+
+- **Duplicate Documentation & Data Loss**  
+  Prehospital assessments are manually repeated in the emergency department, increasing cognitive load, documentation errors, and workflow inefficiencies.
+
+- **Lack of Real-Time Clinical Decision Support**  
+  Paramedics must make high-stakes routing and treatment decisions under time pressure without integrated, evidence-based decision support.
+
+- **Geographic Inequities**  
+  Rural and remote regions lack standardized stroke protocols, real-time routing support, and consistent access to telestroke services.
 
 
-
-
-<h2>Description</h2>
-<b>Stroke Kinesis is a digital health prototype that supports stroke rehabilitation by guiding structured recovery activities, tracking progress over time, and translating patient performance into actionable insights for clinicians and caregivers. It is designed to strengthen continuity of care after discharge through simple workflows, measurable outcomes, and privacy conscious data handling.
-</b>
-<br />
-<br />
-<h2>The problem</h2>
-Current-state BPMN (Stroke Care Pathway): This diagram captures the real-world flow from symptom recognition and 9-1-1 call through dispatch, EMS screening, ED triage and stroke-code activation, imaging (CT), treatment decision-making (e.g., thrombolysis/tPA or EVT), acute monitoring, and discharge planning. A major limitation of the current pathway is what happens after discharge: rehab activities, adherence, symptom tracking, and clinician follow-up are often fragmented across paper instructions, scattered appointments, and inconsistent home practice creating gaps in continuity, limited visibility into patient progress, and delayed escalation when issues emerge. This is exactly the gap Stroke Kinesis addresses by supporting structured home-based rehab sessions, progress tracking, and a clinician-friendly summary layer to strengthen post-acute continuity of care!
-
-<br />
-<br />
-
-<p align="center">
-<img src="https://i.imgur.com/kDCPrpV.png" height="85%" width="85%" alt="RDP event fail logs to iP Geographic information"/>
-  <h2>The Solution</h2>
-Future-state BPMN (with Stroke Kinesis (Green)):After acute stroke care and discharge, the patient is onboarded to Stroke Kinesis with a clinician-set rehab plan and safety thresholds. The app guides home rehab sessions, tracks adherence and symptoms, and flags risks early. Clinicians get a clear progress summary to adjust care sooner closing the post-discharge continuity gap.
-
-<p align="center">
-<img src="https://i.imgur.com/10YtNAZ.png" height="85%" width="85%" alt="Image Analysis Dataflow"/>
-</p>
-</p>
-<h2>Languages Used</h2>
-
-- <b>PowerShell:</b> Extract RDP failed logon logs from Windows Event Viewer 
-
-<h2>Utilities Used</h2>
-VS Code |
-| Microsoft Visio | |
-lucid charts
-
-<h2>Screenshot of Prototype Home page</h2>
-
-<p align="center">
-<img src="https://i.imgur.com/DvupkEg.png" height="85%" width="85%" alt="Image Analysis Dataflow"/>
-</p>
-
-<h2>Javascript Command line interface in VS Code</h2>
+These gaps result in delayed escalation of complications and weakened post-acute continuity of care.
 
 <p align="center">
-<img src="https://i.imgur.com/9XZHnlW.png" height="85%" width="85%" alt="Image Analysis Dataflow"/>
+  <img src="https://i.imgur.com/kDCPrpV.png" width="85%" alt="Current-state stroke care BPMN"/>
 </p>
 
-<!--
- ```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
-```
---!>
+---
+
+
+## ✅ The Solution
+
+### Future-State Prehospital Stroke Management with StrokeKinesis
+
+- **Standardized, Guided Stroke Assessment**  
+  StrokeKinesis embeds validated stroke screening tools (**BE-FAST and LAMS**) into a guided, step-by-step workflow, ensuring consistent and accurate stroke severity assessment across all EMS providers.
+
+- **Real-Time Stroke Severity Scoring**  
+  Patient inputs and clinical findings are processed instantly to generate objective stroke severity scores, supporting rapid and confident decision-making in the field.
+
+- **Intelligent Destination Routing**  
+  An AI-assisted routing engine recommends the most appropriate stroke center
+
+- **Automated Hospital Pre-Notification**  
+  StrokeKinesis transmits structured clinical data to the receiving hospital before arrival, enabling early **stroke team activation** and eliminating redundant assessments.
+
+- **Seamless EMS–Hospital Handover**  
+  Prehospital data flows directly into the hospital electronic health record (EHR), ensuring continuity of information and reducing documentation errors.
+
+- **Offline-First, Field-Ready Design**  
+  The system is optimized for ambulance use, with support for intermittent connectivity, large touch targets, and rapid interaction in high-stress environments.
+
+
+<p align="center">
+  <img src="https://i.imgur.com/10YtNAZ.png" width="85%" alt="Future-state BPMN with Stroke Kinesis"/>
+</p>
+
+---
+
+## 🛠️ Key Features
+
+- Guided **BE-FAST** and **LAMS** stroke assessments  
+- Real-time stroke severity scoring  
+- AI-assisted destination routing  
+- Automated hospital pre-notification  
+- EMS–hospital data continuity (EHR-ready)  
+- Offline-first, ambulance-optimized design  
+
+
+---
+
+## 🧪 How It Works
+
+- EMS opens StrokeKinesis at scene arrival  
+- Guided BE-FAST/LAMS assessment completed  
+- Vital signs and last-known-well captured  
+- System calculates stroke severity  
+- Optimal stroke center recommended  
+- Hospital pre-notified before arrival  
+
+---
+
+## 🧩 Model & Architecture
+
+- Workflow-driven digital health prototype  
+- BPMN-based modeling of current and future stroke pathways  
+- Emphasis on post-acute care continuity and decision support  
+
+---
+
+---
+
+## 🚀 Planned Upgrades
+
+- AI-driven rehabilitation personalization  
+- Predictive risk modeling  
+- Integration with EHR systems  
+- Expanded clinician dashboards  
+
+---
+
+## ⚙️ Tech Stack
+
+- **PowerShell** – Extraction of failed RDP logon events from Windows Event Viewer  
+- **JavaScript** – Command-line interface prototyping  
+- **BPMN** – Clinical workflow modeling  
+
+---
+
+## 🧰 Utilities Used
+
+- Visual Studio Code  
+- Microsoft Visio  
+- Lucidchart  
+
+---
+
+## 🖼️ Prototype Screenshots
+
+
+### 🏠 Landing Page
+<p align="center">
+  <img src="https://i.imgur.com/l80hKIu.png" width="85%" alt="Stroke Kinesis Landing Page"/>
+</p>
+
+---
+
+### 🧠 BE-FAST Assessment – Step 1
+<p align="center">
+  <img src="https://i.imgur.com/SVIXaH6.png" width="85%" alt="BE-FAST Assessment Step 1"/>
+</p>
+
+---
+
+### 🧠 BE-FAST Assessment – Step 2
+<p align="center">
+  <img src="https://i.imgur.com/NJcEEHU.png" width="85%" alt="BE-FAST Assessment Step 2"/>
+</p>
+
+---
+
+### 🏥 Destination Selection
+<p align="center">
+  <img src="https://i.imgur.com/g7KUFKb.png" width="85%" alt="Hospital Destination Selection"/>
+</p>
+
+---
+
+### 📡 Hospital Pre-Notification
+<p align="center">
+  <img src="https://i.imgur.com/HzyGigO.png" width="85%" alt="Hospital Pre-Notification Screen"/>
+</p>
+
+### JavaScript CLI (VS Code)
+<p align="center">
+  <img src="https://i.imgur.com/9XZHnlW.png" width="85%" alt="JavaScript CLI in VS Code"/>
+</p>
+
+---
+
+## 👤 Author
+
+**Mencha Tembong**  
+Health Informatics Student • Data Scientist enthusiast • Digital Health Advocate  
+
+
+---
+
+## ⚠️ Disclaimer
+
+This tool is intended for **educational and decision-support purposes only**.  
+It does **not replace professional medical diagnosis, clinical judgment, or treatment**.
