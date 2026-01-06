@@ -1,11 +1,11 @@
 # 🚑 CDSS for Prehospital Management of Acute Ischemic Stroke  
-### *Stroke Kinesis*
+### *Stroke Nav (Formerly Stroke Kinesis)*
 
 ---
 
 ## 📘 Description
 
-**StrokeKinesis** is a comprehensive clinical decision support (CDS) platform designed to transform **prehospital acute ischemic stroke (AIS) management** by providing real-time triage support, intelligent destination routing, and seamless EMS–hospital integration.
+**Stroke Nav** is a comprehensive clinical decision support (CDS) platform designed to transform **prehospital acute ischemic stroke (AIS) management** by providing real-time triage support, intelligent destination routing, and seamless EMS–hospital integration.
 
 ---
 
@@ -47,7 +47,7 @@ These gaps result in delayed escalation of complications and weakened post-acute
 
 ## ✅ The Solution
 
-### Future-State Prehospital Stroke Management with StrokeKinesis
+### Future-State Prehospital Stroke Management with StrokeNav
 
 - **Standardized, Guided Stroke Assessment**  
   StrokeKinesis embeds validated stroke screening tools (**BE-FAST and LAMS**) into a guided, step-by-step workflow, ensuring consistent and accurate stroke severity assessment across all EMS providers.
